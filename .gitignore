@@ -5,3 +5,7 @@ Question_Answer/
 
 # Vercel
 .vercel/
+
+# Sensitive configuration files
+script/config.yaml
+script/config_oringin.yaml
