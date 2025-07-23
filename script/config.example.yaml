@@ -1,0 +1,70 @@
+# 提示词配置
+prompt_config:
+  # 每次提示中使用的few-shot示例数量
+  max_shots: 5
+  # 系统消息，可以为空
+  system_message: "ང་ནི་ཤེས་བྱའི་སྡེ་ཚན་འདྲ་མིན་གྱི་དྲི་བར་ལན་འདེབས་བྱེད་མཁན་གྱི་རིག་ནུས་ཅན་གྱི་འཕྲུལ་ཆས་ཤིག་ཡིན། ངས་དྲི་བ་རེ་རེར་ཞིབ་ཚགས་པོས་བསམ་བློ་བཏང་སྟེ་ལན་འདེབས་བྱེད་ཀྱི་ཡོད།"
+  # 用户提示模板，包含few-shot示例和问题占位符
+  user_template: |
+    གཤམ་གསལ་འདི་འདེམས་ཀ་གཅིག་མའི་དྲི་བ་ཡིན་པས། ལན་འདེམས་ཀ་ཡང་དག་པ་དེ་ཐད་ཀར་སྟོན་རོགས། ལན་འདེམས་ཀ་ A B C D བཞིའི་ནང་ནས་གཅིག་འདེམས་རོགས།
+
+    {few_shot_examples}དྲི་བ།
+    {question}
+    ལན་ནི།
+  # few-shot示例的格式模板
+  few_shot_template: |
+    དྲི་བ།
+    {question}
+    ལན་ནི། {answer}
+
+# 处理配置
+process_config:
+  # 输入文件夹路径
+  input_folder: "../Ti-MMLU_subset670"
+  # 输出文件夹模板，会自动替换{model_id}
+  output_folder_template: "../model_answer/{model_id}"
+  # few-shot示例文件夹路径
+  few_shot_folder: "../5_shot_Question_Answer"
+  # 批处理大小
+  batch_size: 32
+  # 最大重试次数
+  max_retries: 10
+  # 请求超时时间（秒）
+  timeout: 60
+  # 重试等待时间（秒）
+  retry_wait_time: 2
+
+# 评估配置
+evaluation_config:
+  # 评估结果输出文件夹模板，会自动替换{model_id}
+  output_folder_template: "../model_answer/{model_id}_eval_res"
+  # 评估方法配置
+  methods:
+    # 直接答案评估（只取第一个出现的ABCD）
+    direct_answer:
+      enabled: true
+      # 结果文件名模板
+      metrics_file_template: "{model_id}_direct_metrics_results.csv"
+      # 过滤后的答案文件前缀
+      filtered_file_prefix: "direct_"
+    # 全文答案评估（考虑ABCD组合）
+    concern_all_answer:
+      enabled: true
+      # 结果文件名模板
+      metrics_file_template: "{model_id}_concern_all_answer_metrics_results.csv"
+      # 过滤后的答案文件前缀
+      filtered_file_prefix: "concern_all_answer_"
+  # 通用类别评估结果保存目录
+  general_category_folder: "general"
+  # 需要排除的字符列表
+  exclude_list: []
+
+# 模型配置
+model_configs:
+  # 示例模型配置
+  example_model:
+    name: "your-model-name"
+    url: "https://api.example.com/v1/chat/completions"
+    temperature: 1.0
+    api_key: "your-api-key"
+    model_id: "example_model"
