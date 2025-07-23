@@ -1,0 +1,179 @@
+# 提示词配置
+prompt_config:
+  # 每次提示中使用的few-shot示例数量
+  max_shots: 5
+  # 系统消息，可以为空
+  # "我是一个能够回答各个领域问题的智能助手，我会仔细思考每一个问题并给出答案。"
+  system_message: "ང་ནི་ཤེས་བྱའི་སྡེ་ཚན་འདྲ་མིན་གྱི་དྲི་བར་ལན་འདེབས་བྱེད་མཁན་གྱི་རིག་ནུས་ཅན་གྱི་འཕྲུལ་ཆས་ཤིག་ཡིན། ངས་དྲི་བ་རེ་རེར་ཞིབ་ཚགས་པོས་བསམ་བློ་བཏང་སྟེ་ལན་འདེབས་བྱེད་ཀྱི་ཡོད།"
+  # 用户提示模板，包含few-shot示例和问题占位符
+  user_template: |
+    གཤམ་གསལ་འདི་འདེམས་ཀ་གཅིག་མའི་དྲི་བ་ཡིན་པས། ལན་འདེམས་ཀ་ཡང་དག་པ་དེ་ཐད་ཀར་སྟོན་རོགས། ལན་འདེམས་ཀ་ A B C D བཞིའི་ནང་ནས་གཅིག་འདེམས་རོགས།
+
+    {few_shot_examples}དྲི་བ།
+    {question}
+    ལན་ནི།
+  # few-shot示例的格式模板
+  few_shot_template: |
+    དྲི་བ།
+    {question}
+    ལན་ནི། {answer}
+
+
+# 处理配置
+process_config:
+  # 输入文件夹路径
+  input_folder: "../Question_Answer"
+  # 输出文件夹模板，会自动替换{model_id}
+  output_folder_template: "../model_answer/{model_id}"
+  # few-shot示例文件夹路径
+  few_shot_folder: "../5_shot_Question_Answer"
+  # 批处理大小
+  batch_size: 32
+  # 最大重试次数
+  max_retries: 10
+  # 请求超时时间（秒）
+  timeout: 60
+  # 重试等待时间（秒）
+  retry_wait_time: 2
+
+# 评估配置
+evaluation_config:
+  # 评估结果输出文件夹模板，会自动替换{model_id}
+  output_folder_template: "../model_answer/{model_id}_eval_res"
+  # 评估方法配置
+  methods:
+    # 直接答案评估（只取第一个出现的ABCD）
+    direct_answer:
+      enabled: true
+      # 结果文件名模板
+      metrics_file_template: "{model_id}_direct_metrics_results.csv"
+      # 过滤后的答案文件前缀
+      filtered_file_prefix: "direct_"
+    # 全文答案评估（考虑ABCD组合）
+    concern_all_answer:
+      enabled: true
+      # 结果文件名模板
+      metrics_file_template: "{model_id}_concern_all_answer_metrics_results.csv"
+      # 过滤后的答案文件前缀
+      filtered_file_prefix: "concern_all_answer_"
+  # 通用类别评估结果保存目录
+  general_category_folder: "general"
+  # 需要排除的字符列表
+  exclude_list: ["°C"]
+
+# 模型配置
+model_configs:
+  # Claude模型配置
+  claude:
+    name: "claude-3-5-sonnet-20241022"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude"
+
+  # Deepseek R1模型配置
+  deepseekr1:
+    name: "deepseek-r1"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    stream: true
+    api_key: "your-api-key"
+    model_id: "deepseekr1"
+
+  # Deepseek V3模型配置
+  deepseekv3:
+    name: "deepseek-v3"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    api_key: "your-api-key"
+    model_id: "deepseekv3"
+
+  # Gemini模型配置
+  gemini:
+    name: "gemini-1.5-flash"
+    url: "https://api.openai99.top/v1/chat/completions"
+    top_p: 0.95
+    api_key: "your-gemini-api-key"
+    model_id: "gemini"
+
+  # GPT-3.5 Turbo模型配置
+  gpt3.5turbo:
+    name: "gpt-3.5-turbo"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    top_p: 1.0
+    api_key: "your-openai-api-key"
+    model_id: "gpt3.5turbo"
+
+  # GPT-4模型配置
+  gpt4o:
+    name: "gpt-4o"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    top_p: 1.0
+    api_key: "your-openai-api-key"
+    model_id: "gpt4o"
+
+  # Llama 3.1 8B模型配置
+  llama3.18b:
+    name: "llama-3.1-8b"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.6
+    top_p: 0.9
+    api_key: "your-api-key"
+    model_id: "llama3.18b"
+
+  # Llama 3.1 70B模型配置
+  llama3.170b:
+    name: "llama-3.1-70b"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.6
+    top_p: 0.9
+    api_key: "your-api-key"
+    model_id: "llama3.170b"
+
+  # Llama 3.1 405B模型配置
+  llama3.1405b:
+    name: "llama-3.1-405b"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.6
+    top_p: 0.9
+    api_key: "your-api-key"
+    model_id: "llama3.1405b"
+
+  # O1-mini模型配置
+  o1mini:
+    name: "o1-mini"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 1.0
+    top_p: 1.0
+    stream: true
+    api_key: "your-api-key"
+    model_id: "o1mini"
+
+  # Qwen 2.5 7B模型配置
+  qwen2.57b:
+    name: "qwen2.5-7b-instruct"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.7
+    top_p: 0.8
+    api_key: "your-api-key"
+    model_id: "qwen2.57b"
+
+  # Qwen 2.5 32B模型配置
+  qwen2.532b:
+    name: "qwen2.5-32b-instruct"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.7
+    top_p: 0.8
+    api_key: "your-api-key"
+    model_id: "qwen2.532b"
+
+  # Qwen 2.5 72B模型配置
+  qwen2.572b:
+    name: "qwen2.5-72b-instruct"
+    url: "https://api.openai99.top/v1/chat/completions"
+    temperature: 0.7
+    top_p: 0.8
+    api_key: "your-api-key"
+    model_id: "qwen2.572b"

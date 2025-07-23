@@ -1,0 +1,7 @@
+# Exclude specific folders
+logs/
+model_answer/
+Question_Answer/
+
+# Vercel
+.vercel/
