@@ -199,12 +199,12 @@ def auto_evaluate_results(model_id: str):
     Args:
         model_id: 模型ID，用于定位输出文件夹
     """
-    # 加载配置
-    _, _, _, evaluation_config = load_config()
+    # 加载配置以获取 max_shots 值
+    _, prompt_config, process_config, evaluation_config = load_config()
     
-    # 构建输入和输出文件夹路径
-    input_folder = f"../model_answer/{model_id}"
-    output_folder = evaluation_config.output_folder_template.format(model_id=model_id)
+    # 构建输入和输出文件夹路径，使用 max_shots 值
+    input_folder = process_config.output_folder_template.format(max_shots=prompt_config.max_shots, model_id=model_id)
+    output_folder = evaluation_config.output_folder_template.format(max_shots=prompt_config.max_shots, model_id=model_id)
     
     # 处理文件夹，生成评估结果
     for method_name, method_config in evaluation_config.methods.items():

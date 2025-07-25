@@ -37,7 +37,7 @@ def run_model(model_configs: Dict[str, Any], prompt_config: Any, process_config:
     model_config, model_id = get_model_config(model_configs, prompt_config, model_type)
     
     # 设置输出文件夹
-    process_config.output_folder = process_config.output_folder_template.format(model_id=model_id)
+    process_config.output_folder = process_config.output_folder_template.format(model_id=model_id, max_shots=model_config.prompt_config.max_shots)
     
     # 更新处理参数（如果有）
     if process_params:
