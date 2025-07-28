@@ -22,7 +22,7 @@ process_config:
   # 输入文件夹路径
   input_folder: "../Ti-MMLU_subset670"
   # 输出文件夹模板，会自动替换{model_id}
-  output_folder_template: "../model_answer/{model_id}"
+  output_folder_template: "../model_answer/{max_shots}_shot/{model_id}"
   # few-shot示例文件夹路径
   few_shot_folder: "../5_shot_Question_Answer"
   # 批处理大小
