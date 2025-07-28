@@ -2,6 +2,8 @@
 logs/
 model_answer/
 Question_Answer/
+Ti- MMLU_trans
+__pycache__
 
 # Vercel
 .vercel/

@@ -21,14 +21,14 @@ PROCESS_CONFIG = {
 MODEL_CONFIGS = {
     "claude": {
         "name": "claude-3-5-sonnet-20241022",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "api_key": "your-claude-api-key",
         "model_id": "claude"
     },
     "deepseekr1": {
         "name": "deepseek-r1",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "stream": True,
         "api_key": "your-api-key",
@@ -36,21 +36,21 @@ MODEL_CONFIGS = {
     },
     "deepseekv3": {
         "name": "deepseek-v3",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "api_key": "your-api-key",
         "model_id": "deepseekv3"
     },
     "gemini": {
         "name": "gemini-1.5-flash",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "top_p": 0.95,
         "api_key": "your-gemini-api-key",
         "model_id": "gemini"
     },
     "gpt3.5turbo": {
         "name": "gpt-3.5-turbo",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "top_p": 1.0,
         "api_key": "your-openai-api-key",
@@ -58,7 +58,7 @@ MODEL_CONFIGS = {
     },
     "gpt4o": {
         "name": "gpt-4o",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "top_p": 1.0,
         "api_key": "your-openai-api-key",
@@ -66,7 +66,7 @@ MODEL_CONFIGS = {
     },
     "llama3.18b": {
         "name": "llama-3.1-8b",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.6,
         "top_p": 0.9,
         "api_key": "your-api-key",
@@ -74,7 +74,7 @@ MODEL_CONFIGS = {
     },
     "llama3.170b": {
         "name": "llama-3.1-70b",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.6,
         "top_p": 0.9,
         "api_key": "your-api-key",
@@ -82,7 +82,7 @@ MODEL_CONFIGS = {
     },
     "llama3.1405b": {
         "name": "llama-3.1-405b",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.6,
         "top_p": 0.9,
         "api_key": "your-api-key",
@@ -90,7 +90,7 @@ MODEL_CONFIGS = {
     },
     "o1mini": {
         "name": "o1-mini",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 1.0,
         "top_p": 1.0,
         "stream": True,
@@ -99,7 +99,7 @@ MODEL_CONFIGS = {
     },
     "qwen2.57b": {
         "name": "qwen2.5-7b-instruct",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.7,
         "top_p": 0.8,
         "api_key": "your-api-key",
@@ -107,7 +107,7 @@ MODEL_CONFIGS = {
     },
     "qwen2.532b": {
         "name": "qwen2.5-32b-instruct",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.7,
         "top_p": 0.8,
         "api_key": "your-api-key",
@@ -115,7 +115,7 @@ MODEL_CONFIGS = {
     },
     "qwen2.572b": {
         "name": "qwen2.5-72b-instruct",
-        "url": "https://api.openai99.top/v1/chat/completions",
+        "url": "your-api-url",
         "temperature": 0.7,
         "top_p": 0.8,
         "api_key": "your-api-key",
