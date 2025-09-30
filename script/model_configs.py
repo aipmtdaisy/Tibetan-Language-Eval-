@@ -19,106 +19,69 @@ PROCESS_CONFIG = {
 
 # 模型配置
 MODEL_CONFIGS = {
-    "claude": {
-        "name": "claude-3-5-sonnet-20241022",
-        "url": "your-api-url",
+    "claude-sonnet-4-5": {
+        "name": "claude-sonnet-4-5-20250929",
+        "url": "https://api.anthropic.com/v1/messages",
         "temperature": 1.0,
         "api_key": "your-claude-api-key",
-        "model_id": "claude"
+        "model_id": "claude-sonnet-4-5"
     },
-    "deepseekr1": {
-        "name": "deepseek-r1",
-        "url": "your-api-url",
+    "claude-opus-4-1": {
+        "name": "claude-opus-4-1-20250805",
+        "url": "https://api.anthropic.com/v1/messages",
         "temperature": 1.0,
-        "stream": True,
-        "api_key": "your-api-key",
-        "model_id": "deepseekr1"
+        "api_key": "your-claude-api-key",
+        "model_id": "claude-opus-4-1"
     },
-    "deepseekv3": {
-        "name": "deepseek-v3",
-        "url": "your-api-url",
+    # "claude-opus-4": {
+    #     "name": "claude-opus-4-20250514",
+    #     "url": "https://api.anthropic.com/v1/messages",
+    #     "temperature": 1.0,
+    #     "api_key": "your-claude-api-key",
+    #     "model_id": "claude-opus-4"
+    # },
+    # "claude-sonnet-4": {
+    #     "name": "claude-sonnet-4-20250514",
+    #     "url": "https://api.anthropic.com/v1/messages",
+    #     "temperature": 1.0,
+    #     "api_key": "your-claude-api-key",
+    #     "model_id": "claude-sonnet-4"
+    # },
+    # "claude-3-7-sonnet": {
+    #     "name": "claude-3-7-sonnet-20250219",
+    #     "url": "https://api.anthropic.com/v1/messages",
+    #     "temperature": 1.0,
+    #     "api_key": "your-claude-api-key",
+    #     "model_id": "claude-3-7-sonnet"
+    # },
+    # "claude-3-5-haiku": {
+    #     "name": "claude-3-5-haiku-20241022",
+    #     "url": "https://api.anthropic.com/v1/messages",
+    #     "temperature": 1.0,
+    #     "api_key": "your-claude-api-key",
+    #     "model_id": "claude-3-5-haiku"
+    # },
+    # "claude-3-haiku": {
+    #     "name": "claude-3-haiku-20240307",
+    #     "url": "https://api.anthropic.com/v1/messages",
+    #     "temperature": 1.0,
+    #     "api_key": "your-claude-api-key",
+    #     "model_id": "claude-3-haiku"
+    # },
+    "gemini-2-5-pro": {
+        "name": "gemini-2.5-pro",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent",
         "temperature": 1.0,
-        "api_key": "your-api-key",
-        "model_id": "deepseekv3"
-    },
-    "gemini": {
-        "name": "gemini-1.5-flash",
-        "url": "your-api-url",
         "top_p": 0.95,
         "api_key": "your-gemini-api-key",
-        "model_id": "gemini"
+        "model_id": "gemini-2-5-pro"
     },
-    "gpt3.5turbo": {
-        "name": "gpt-3.5-turbo",
-        "url": "your-api-url",
+    "gemini-2-5-flash": {
+        "name": "gemini-2.5-flash",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
         "temperature": 1.0,
-        "top_p": 1.0,
-        "api_key": "your-openai-api-key",
-        "model_id": "gpt3.5turbo"
-    },
-    "gpt4o": {
-        "name": "gpt-4o",
-        "url": "your-api-url",
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "api_key": "your-openai-api-key",
-        "model_id": "gpt4o"
-    },
-    "llama3.18b": {
-        "name": "llama-3.1-8b",
-        "url": "your-api-url",
-        "temperature": 0.6,
-        "top_p": 0.9,
-        "api_key": "your-api-key",
-        "model_id": "llama3.18b"
-    },
-    "llama3.170b": {
-        "name": "llama-3.1-70b",
-        "url": "your-api-url",
-        "temperature": 0.6,
-        "top_p": 0.9,
-        "api_key": "your-api-key",
-        "model_id": "llama3.170b"
-    },
-    "llama3.1405b": {
-        "name": "llama-3.1-405b",
-        "url": "your-api-url",
-        "temperature": 0.6,
-        "top_p": 0.9,
-        "api_key": "your-api-key",
-        "model_id": "llama3.1405b"
-    },
-    "o1mini": {
-        "name": "o1-mini",
-        "url": "your-api-url",
-        "temperature": 1.0,
-        "top_p": 1.0,
-        "stream": True,
-        "api_key": "your-api-key",
-        "model_id": "o1mini"
-    },
-    "qwen2.57b": {
-        "name": "qwen2.5-7b-instruct",
-        "url": "your-api-url",
-        "temperature": 0.7,
-        "top_p": 0.8,
-        "api_key": "your-api-key",
-        "model_id": "qwen2.57b"
-    },
-    "qwen2.532b": {
-        "name": "qwen2.5-32b-instruct",
-        "url": "your-api-url",
-        "temperature": 0.7,
-        "top_p": 0.8,
-        "api_key": "your-api-key",
-        "model_id": "qwen2.532b"
-    },
-    "qwen2.572b": {
-        "name": "qwen2.5-72b-instruct",
-        "url": "your-api-url",
-        "temperature": 0.7,
-        "top_p": 0.8,
-        "api_key": "your-api-key",
-        "model_id": "qwen2.572b"
+        "top_p": 0.95,
+        "api_key": "your-gemini-api-key",
+        "model_id": "gemini-2-5-flash"
     }
 }

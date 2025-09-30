@@ -23,14 +23,7 @@ class ModelConfig:
     def get_request_params(self, question: str, few_shot_examples: str = "") -> dict:
         """构建请求参数"""
         messages = []
-        
-        # 添加系统消息（如果有）
-        if self.prompt_config.system_message:
-            messages.append({
-                "role": "system",
-                "content": self.prompt_config.system_message
-            })
-        
+
         # 构建用户消息（包含few-shot示例，如果有的话）
         user_content = self.prompt_config.user_template.format(
             few_shot_examples=few_shot_examples,
@@ -46,6 +39,17 @@ class ModelConfig:
             "model": self.model_name,
             "messages": messages,
         }
+
+        # For Anthropic Claude API, system message goes as a separate parameter
+        if self.prompt_config.system_message and "anthropic" in self.url.lower():
+            params["system"] = self.prompt_config.system_message
+            params["max_tokens"] = 1024  # Required for Claude API
+        # For other APIs, add system message to messages array
+        elif self.prompt_config.system_message:
+            messages.insert(0, {
+                "role": "system",
+                "content": self.prompt_config.system_message
+            })
 
         # 添加可选参数
         if self.prompt_config.temperature is not None:

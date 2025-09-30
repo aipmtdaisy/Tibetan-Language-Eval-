@@ -61,10 +61,69 @@ evaluation_config:
 
 # 模型配置
 model_configs:
-  # 示例模型配置
-  example_model:
-    name: "your-model-name"
-    url: "https://api.example.com/v1/chat/completions"
+  # Claude models configuration
+  claude-sonnet-4-5:
+    name: "claude-sonnet-4-5-20250929"
+    url: "https://api.anthropic.com/v1/messages"
     temperature: 1.0
-    api_key: "your-api-key"
-    model_id: "example_model"
+    api_key: "your-claude-api-key"
+    model_id: "claude-sonnet-4-5"
+
+  claude-opus-4-1:
+    name: "claude-opus-4-1-20250805"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-opus-4-1"
+
+  claude-opus-4:
+    name: "claude-opus-4-20250514"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-opus-4"
+
+  claude-sonnet-4:
+    name: "claude-sonnet-4-20250514"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-sonnet-4"
+
+  claude-3-7-sonnet:
+    name: "claude-3-7-sonnet-20250219"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-3-7-sonnet"
+
+  claude-3-5-haiku:
+    name: "claude-3-5-haiku-20241022"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-3-5-haiku"
+
+  claude-3-haiku:
+    name: "claude-3-haiku-20240307"
+    url: "https://api.anthropic.com/v1/messages"
+    temperature: 1.0
+    api_key: "your-claude-api-key"
+    model_id: "claude-3-haiku"
+
+  # Gemini models configuration
+  gemini-2-5-pro:
+    name: "gemini-2.5-pro"
+    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent"
+    temperature: 1.0
+    top_p: 0.95
+    api_key: "your-gemini-api-key"
+    model_id: "gemini-2-5-pro"
+
+  gemini-2-5-flash:
+    name: "gemini-2.5-flash"
+    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    temperature: 1.0
+    top_p: 0.95
+    api_key: "your-gemini-api-key"
+    model_id: "gemini-2-5-flash"

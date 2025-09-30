@@ -85,6 +85,53 @@ class ModelProcessor:
             )
         return few_shot_text
 
+    def convert_to_gemini_format(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert OpenAI/Claude format to Gemini format"""
+        contents = []
+
+        # Convert system message if present
+        system_instruction = None
+        if "system" in payload:
+            system_instruction = payload["system"]
+
+        # Convert messages to Gemini contents format
+        for msg in payload.get("messages", []):
+            role = "user" if msg["role"] == "user" else "model"
+            contents.append({
+                "parts": [{"text": msg["content"]}],
+                "role": role
+            })
+
+        gemini_payload = {
+            "contents": contents,
+            "generationConfig": {}
+        }
+
+        if system_instruction:
+            gemini_payload["systemInstruction"] = {"parts": [{"text": system_instruction}]}
+
+        if "temperature" in payload:
+            gemini_payload["generationConfig"]["temperature"] = payload["temperature"]
+        if "top_p" in payload:
+            gemini_payload["generationConfig"]["topP"] = payload["top_p"]
+
+        return gemini_payload
+
+    def convert_gemini_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert Gemini response to OpenAI/Claude format"""
+        if "candidates" in response and response["candidates"]:
+            content = response["candidates"][0]["content"]["parts"][0]["text"]
+            return {"choices": [{"message": {"content": content}}]}
+        return response
+
+    def convert_claude_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert Claude (Anthropic) response to OpenAI format"""
+        if "content" in response and isinstance(response["content"], list) and response["content"]:
+            # Claude returns content as array of objects: [{'type': 'text', 'text': '...'}]
+            content = response["content"][0].get("text", "")
+            return {"choices": [{"message": {"content": content}}]}
+        return response
+
     def make_request(self, payload: Dict[str, Any], index: Optional[int] = None) -> Dict[str, Any]:
         """统一的请求处理方法
         Args:
@@ -93,15 +140,38 @@ class ModelProcessor:
         Returns:
             Dict: API响应结果
         """
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.model_config.api_key}"
-        }
-        
+        # Check if this is Claude API (Anthropic), Gemini API, or other API
+        is_anthropic = "anthropic.com" in self.model_config.url
+        is_gemini = "generativelanguage.googleapis.com" in self.model_config.url
+
+        # Prepare URL (don't modify the original!)
+        request_url = self.model_config.url
+
+        if is_anthropic:
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": self.model_config.api_key,
+                "anthropic-version": "2023-06-01"
+            }
+        elif is_gemini:
+            headers = {
+                "Content-Type": "application/json"
+            }
+            # Convert payload to Gemini format
+            payload = self.convert_to_gemini_format(payload)
+            # Add API key to URL (create new URL, don't modify original)
+            if "?" not in request_url:
+                request_url = f"{request_url}?key={self.model_config.api_key}"
+        else:
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.model_config.api_key}"
+            }
+
         for attempt in range(self.process_config.max_retries):
             try:
                 response = requests.post(
-                    self.model_config.url,
+                    request_url,
                     headers=headers,
                     json=payload,
                     timeout=self.process_config.timeout,
@@ -116,16 +186,16 @@ class ModelProcessor:
                             for line in response.iter_lines():
                                 if not line:
                                     continue
-                                    
+
                                 line = line.decode('utf-8')
                                 if not line.startswith('data: '):
                                     continue
-                                    
+
                                 try:
                                     json_data = json.loads(line[6:])
                                     if not json_data.get('choices'):
                                         continue
-                                        
+
                                     delta = json_data['choices'][0].get('delta', {})
                                     if 'content' in delta:
                                         content = delta['content']
@@ -134,16 +204,23 @@ class ModelProcessor:
                                             print(f"\r请求 #{index + 1} - 实时输出: {full_response}", end='', flush=True)
                                 except json.JSONDecodeError:
                                     continue
-                                    
+
                             if index is not None:
                                 print()  # 换行
                             return {"choices": [{"message": {"content": full_response}}]}
-                            
+
                         except Exception as e:
                             self.logger.error(f"流式响应处理错误: {str(e)}")
                             raise
                     else:
-                        return response.json()
+                        response_json = response.json()
+                        # Convert Gemini response format if needed
+                        if is_gemini:
+                            return self.convert_gemini_response(response_json)
+                        # Convert Claude response format if needed
+                        if is_anthropic:
+                            return self.convert_claude_response(response_json)
+                        return response_json
                 else:
                     error_msg = f"请求失败，状态码: {response.status_code}, 响应: {response.text}"
                     self.logger.error(f"请求 #{index + 1 if index is not None else 'N/A'} - {error_msg}")
@@ -187,7 +264,9 @@ class ModelProcessor:
             
             # 使用统一的请求处理方法
             response_json = self.make_request(payload, index)
-            
+
+            self.logger.debug(f"请求 #{index + 1} - 响应结构: {list(response_json.keys())}")
+
             if "choices" in response_json and response_json["choices"]:
                 message = response_json["choices"][0].get("message", {})
                 content = message.get("content", "").strip()
@@ -195,11 +274,16 @@ class ModelProcessor:
                     entry["model_result"] = content
                     self.logger.info(f"请求 #{index + 1} - 结果: {content}")
                     return entry
+                else:
+                    self.logger.error(f"请求 #{index + 1} - 响应内容为空. message: {message}")
+            else:
+                self.logger.error(f"请求 #{index + 1} - 响应格式异常: {response_json}")
 
         except Exception as e:
-            self.logger.error(f"处理请求时发生错误: {str(e)}")
+            self.logger.error(f"请求 #{index + 1} - 处理请求时发生错误: {str(e)}", exc_info=True)
 
         entry["model_result"] = "Failed after retries"
+        self.logger.error(f"请求 #{index + 1} - 标记为失败: {entry['loc']}")
         return entry
 
     def process_file(self, input_file: str) -> None:
